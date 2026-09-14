@@ -43,6 +43,13 @@
     "cover_local": "assets/covers/steppaz-anthem.jpg"
   },
   {
+    "slug": "the-mane-family-feat-stallyon",
+    "title": "The Mane Family (feat. Stal'lyon)",
+    "cover_local": "assets/covers/the-mane-family-feat-stallyon.jpg",
+    "audio_local": "assets/audio/the-mane-family-feat-stallyon.mp3",
+    "status": "out"
+  },
+  {
     "slug": "thirsty-thursday",
     "title": "Thirsty Thursday",
     "cover": "https://distrokid.imgix.net/http%3A%2F%2Fgather.fandalism.com%2F5334637--11ED465E-F860-4DDB-9FBDB2AEC1D79A10--0--2603842--1000023973.png?fm=jpg&mark-y=568&mark-x=620&mark-w=180&q=75&w=800&mark=http%3A%2F%2Fgather.fandalism.com%2Fdistrokid-sticker-sm.png&s=8ebb13eaf0a6f564955ec36533ce6079",
