@@ -1128,7 +1128,7 @@
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-8 reveal-stagger">
-      <div class="border border-subtle glow-card hover-glow overflow-hidden">
+      <div class="border border-subtle glow-card hover-glow overflow-hidden mb-yt-slot" hidden>
         <div class="w-full aspect-video overflow-hidden" style="background-color: var(--bg-deep);">
           <iframe src="https://www.youtube.com/embed/gPkjfMod1BE" title="M_B live performance 01" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy" class="w-full h-full"></iframe>
         </div>
@@ -1138,7 +1138,7 @@
         </div>
       </div>
 
-      <div class="border border-subtle glow-card hover-glow overflow-hidden">
+      <div class="border border-subtle glow-card hover-glow overflow-hidden mb-yt-slot" hidden>
         <div class="w-full aspect-video overflow-hidden" style="background-color: var(--bg-deep);">
           <iframe src="https://www.youtube.com/embed/zDfDDZkm9jc" title="M_B live performance 02" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy" class="w-full h-full"></iframe>
         </div>
@@ -1148,7 +1148,7 @@
         </div>
       </div>
 
-      <div class="border border-subtle glow-card hover-glow overflow-hidden">
+      <div class="border border-subtle glow-card hover-glow overflow-hidden mb-yt-slot" hidden>
         <div class="w-full aspect-video overflow-hidden" style="background-color: var(--bg-deep);">
           <iframe src="https://www.youtube.com/embed/60NGtRSQo24" title="M_B live performance 03" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy" class="w-full h-full"></iframe>
         </div>
@@ -1158,7 +1158,7 @@
         </div>
       </div>
 
-      <div class="border border-subtle glow-card hover-glow overflow-hidden">
+      <div class="border border-subtle glow-card hover-glow overflow-hidden mb-yt-slot" hidden>
         <div class="w-full aspect-video overflow-hidden" style="background-color: var(--bg-deep);">
           <iframe src="https://www.youtube.com/embed/J1gFuugDE-0" title="M_B live performance 04" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy" class="w-full h-full"></iframe>
         </div>
@@ -1168,7 +1168,7 @@
         </div>
       </div>
 
-      <div class="border border-subtle glow-card hover-glow overflow-hidden">
+      <div class="border border-subtle glow-card hover-glow overflow-hidden mb-yt-slot" hidden>
         <div class="w-full aspect-video overflow-hidden" style="background-color: var(--bg-deep);">
           <iframe src="https://www.youtube.com/embed/VoAh0AQa0vI" title="M_B live performance 05" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy" class="w-full h-full"></iframe>
         </div>
@@ -2660,5 +2660,40 @@
   })();
   </script>
   <script src="/lib/grid-autofix.js" defer></script>
+
+<!-- ── LIVE YOUTUBE — ZERO DELAY ────────────────────────────────────────────────
+     qi 2026-09-14: "M_B and Diamond Cutz Studio have upgraded so that what they
+     post updates their site with 0 delay."
+     These five cards used to carry HARDCODED embed ids — whatever was true the day
+     someone typed them. They are now filled at PAGE LOAD from M_B's own channel
+     (UCn6Kcf0PO1m3raNtmux7sPw, resolved from youtube.com/@m_b76), so the moment he
+     uploads, the next visitor sees it. No cron, no cache, no rebuild.
+     ⚠️ The browser CANNOT read YouTube's RSS directly — it serves no CORS header.
+     app.xlrd.org/feed/youtube fetches it server-side and serves it from our origin.
+     ⚠️ Cards start hidden and are revealed only when a real video fills them, so a
+     dead feed shows NOTHING rather than five broken players. -->
+<script>
+(function(){
+  var CH='UCn6Kcf0PO1m3raNtmux7sPw';
+  var slots=[].slice.call(document.querySelectorAll('.mb-yt-slot'));
+  if(!slots.length) return;
+  fetch('https://app.xlrd.org/feed/youtube?channel='+CH,{cache:'no-store'})
+   .then(function(r){return r.json();})
+   .then(function(d){
+     if(!d||!d.ok||!d.videos||!d.videos.length) return;   // silent: no fake cards
+     d.videos.slice(0,slots.length).forEach(function(v,i){
+       var card=slots[i];
+       var f=card.querySelector('iframe');
+       if(f){ f.src='https://www.youtube.com/embed/'+v.id; f.title=v.title; }
+       var label=card.querySelector('.p-6 span');
+       if(label) label.textContent=v.title;
+       var idx=card.querySelectorAll('.p-6 span')[1];
+       if(idx) idx.textContent=(v.published||'').slice(0,10);
+       card.hidden=false;
+     });
+   })
+   .catch(function(){ /* leave the cards hidden - never show a broken player */ });
+})();
+</script>
 </body>
 </html>
