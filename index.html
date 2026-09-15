@@ -499,7 +499,12 @@
        doubled shine text stopped drawing attention away from it.
        Doubling the class raises specificity without !important, and it fixes every
        element on the page that asks for a capsule while carrying border-subtle. */
-    .rounded-full.rounded-full { border-radius: 9999px; }
+    /* Specificity, counted properly this time: the blanket rule's
+       `.border.border-subtle:not(.tour-row)` is 0-3-0, because :not() contributes its
+       argument's specificity. A doubled `.rounded-full.rounded-full` is only 0-2-0 and
+       LOST — verified on the live page, which still computed 14px after that attempt.
+       Three classes wins it outright, without reaching for !important. */
+    .rounded-full.rounded-full.rounded-full { border-radius: 9999px; }
     /* Tour rows · rounded on first + last for clean list edges */
     .tour-row:first-child { border-top-left-radius: var(--radius-md); border-top-right-radius: var(--radius-md); }
     .tour-row:last-child { border-bottom-left-radius: var(--radius-md); border-bottom-right-radius: var(--radius-md); }
