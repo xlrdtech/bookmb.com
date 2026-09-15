@@ -19,6 +19,166 @@
 
   <!-- Favicon · canonical · theme -->
   <link rel="canonical" href="https://bookmb.com/">
+  <!-- STRUCTURED DATA. Added 2026-09-15. The page had ZERO machine-readable
+       identity: no MusicGroup, no Event markup, so Google could not know M_B is a
+       musician with tour dates and he could not appear in event or "concerts near
+       me" results. Events here are ONLY the dates still VISIBLE on the page - Google
+       requires markup to match rendered content, and the tour list auto-hides past
+       dates, so marking up expired shows would be a mismatch. Regenerate when the
+       season rolls. -->
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "MusicGroup",
+      "@id": "https://bookmb.com/#artist",
+      "name": "M_B",
+      "alternateName": "Mane Family Mafia",
+      "description": "Award winning southern soul artist. Trail rides, field parties, and rodeos across the South - real live vocals, every show.",
+      "url": "https://bookmb.com",
+      "genre": [
+        "Southern Soul",
+        "Soul Blues",
+        "R&B"
+      ],
+      "sameAs": [
+        "https://www.youtube.com/@m_b76",
+        "https://www.instagram.com/thereal_m_b"
+      ]
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://bookmb.com/#website",
+      "url": "https://bookmb.com",
+      "name": "M_B · Award Winning Southern Soul Artist",
+      "publisher": {
+        "@id": "https://bookmb.com/#artist"
+      }
+    },
+    {
+      "@type": "Event",
+      "name": "1941 Artist Check In · MB “Mr F It Up”",
+      "startDate": "2026-09-26",
+      "eventStatus": "https://schema.org/EventScheduled",
+      "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+      "performer": {
+        "@type": "MusicGroup",
+        "name": "M_B",
+        "@id": "https://bookmb.com/#artist"
+      },
+      "location": {
+        "@type": "Place",
+        "name": "Smith Family Ranch",
+        "address": {
+          "@type": "PostalAddress",
+          "addressCountry": "US"
+        }
+      },
+      "url": "https://bookmb.com/#tour",
+      "description": "Smith Family Ranch · September 26, 2026 · 12PM–12AM · MB of Mane Family Mafia · Rep your squad, take your pic, show your pride — one team, one family, one legacy"
+    },
+    {
+      "@type": "Event",
+      "name": "Hochella 2026",
+      "startDate": "2026-10-23",
+      "eventStatus": "https://schema.org/EventScheduled",
+      "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+      "performer": {
+        "@type": "MusicGroup",
+        "name": "M_B",
+        "@id": "https://bookmb.com/#artist"
+      },
+      "location": {
+        "@type": "Place",
+        "name": "J. Blade Ranch",
+        "address": {
+          "@type": "PostalAddress",
+          "addressCountry": "US",
+          "addressLocality": "Ellenwood",
+          "addressRegion": "GA"
+        }
+      },
+      "url": "https://bookmb.com/#tour",
+      "description": "J. Blade Ranch · Ellenwood GA · October 23–24, 2026 · Presented by Pieced By Jen · Collaborators, vendors and creators — no vendor fee, set your own prices, VIP access"
+    },
+    {
+      "@type": "Event",
+      "name": "Tuskegee Homecoming Weekend · The Ultimate Field Party",
+      "startDate": "2026-11-06",
+      "eventStatus": "https://schema.org/EventScheduled",
+      "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+      "performer": {
+        "@type": "MusicGroup",
+        "name": "M_B",
+        "@id": "https://bookmb.com/#artist"
+      },
+      "location": {
+        "@type": "Place",
+        "name": "Triple H Bottom & Trails",
+        "address": {
+          "@type": "PostalAddress",
+          "addressCountry": "US",
+          "streetAddress": "6344 US Highway 29 South",
+          "addressLocality": "Tuskegee",
+          "addressRegion": "AL",
+          "postalCode": "36083"
+        }
+      },
+      "url": "https://bookmb.com/#tour",
+      "description": "Triple H Bottom & Trails · 6344 US Highway 29 South · Tuskegee AL 36083 · Friday 11/6 · 4PM until · M_B performing live ft. Mane Family Mafia · Featuring DJ Payme · Live music from 4:30PM by Riverside Entertainment · Live band, food trucks, mechanical bull, vendors, Steppaz groups · $20 early bird /"
+    },
+    {
+      "@type": "Event",
+      "name": "Boots On The Ground Southern Soul Fest · 2nd Annual",
+      "startDate": "2026-11-14",
+      "eventStatus": "https://schema.org/EventScheduled",
+      "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+      "performer": {
+        "@type": "MusicGroup",
+        "name": "M_B",
+        "@id": "https://bookmb.com/#artist"
+      },
+      "location": {
+        "@type": "Place",
+        "name": "SORR Callahan Fair Grounds",
+        "address": {
+          "@type": "PostalAddress",
+          "addressCountry": "US",
+          "addressLocality": "US-1, Callahan",
+          "addressRegion": "FL"
+        }
+      },
+      "url": "https://bookmb.com/#tour",
+      "description": "SORR Callahan Fair Grounds · US-1, Callahan FL · Saturday November 14, 2026 · Gates 2PM, show starts 4PM · M_B on the lineup with King George, Myia B, Uncle Daddy, 69 Boyz, Lynn Tate, Cherrelle, Japvonn and The Groove Coalition Band · Hosted by Comedian Little Man · Early bird $45 · Hookups, vendors"
+    },
+    {
+      "@type": "Event",
+      "name": "The Ultimate Trailride Part 2 · Bonfire Edition",
+      "startDate": "2026-11-21",
+      "eventStatus": "https://schema.org/EventScheduled",
+      "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+      "performer": {
+        "@type": "MusicGroup",
+        "name": "M_B",
+        "@id": "https://bookmb.com/#artist"
+      },
+      "location": {
+        "@type": "Place",
+        "name": "123411 Tucker Swamp RR Rd",
+        "address": {
+          "@type": "PostalAddress",
+          "addressCountry": "US",
+          "streetAddress": "123411 Tucker Swamp RR Rd"
+        }
+      },
+      "url": "https://bookmb.com/#tour",
+      "description": "123411 Tucker Swamp RR Rd · VA 23898 · Saturday November 21, 2026 · 6PM–2AM · M_B performing live ft. Mane Family Mafia · DJ Rawlo and DJ Kin Folk, sound by CCS Entertainment · RV campers, four wheelers, slingshots, side-by-sides, line dancers · Steppaz groups · $20 advance / $30 at the gate on Even"
+    }
+  ]
+}
+  </script>
+
   <meta name="theme-color" content="#050b1c">
   <link rel="icon" type="image/jpeg" href="assets/mb-logo.jpg">
   <link rel="apple-touch-icon" href="assets/mb-logo.jpg">
