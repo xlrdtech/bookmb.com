@@ -425,6 +425,18 @@
       content: attr(data-text);
       position: absolute;
       inset: 0;
+      /* ⚠️ CENTRE THE GLARE ON THE TEXT, DO NOT PIN IT TO THE BOX TOP.
+         MEASURED 2026-09-15 on the live site: "AWARD WINNING SOUTHERN SOUL ARTIST"
+         rendered TWICE, one copy about a line above the other, reading as a smear.
+         Cause: the real text sits inside the pill's py-2.5 padding, while this overlay
+         is inset:0 with no padding of its own - so it drew at the TOP EDGE of the box,
+         one padding-height higher than the words it is supposed to sit on. Flexing it
+         to centre puts the glare back on the glyphs at any padding or font size. */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      white-space: nowrap;
       background: linear-gradient(100deg, transparent 30%, rgba(255,255,255,0.85) 50%, transparent 70%);
       background-size: 220% 100%;
       background-position: 100% 50%;
