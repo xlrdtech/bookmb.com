@@ -488,6 +488,18 @@
     }
     .book-modal-panel { border-radius: var(--radius-xl); }
     .book-modal-close { border-radius: 50%; }
+
+    /* ⚠️ AN EXPLICIT rounded-full MUST BEAT THE BLANKET RADIUS ABOVE.
+       MEASURED 2026-09-15 on the live hero: the "AWARD WINNING SOUTHERN SOUL ARTIST"
+       badge computed to border-radius 14px despite carrying rounded-full, because the
+       blanket rule matches it via `.border.border-subtle:not(.tour-row)` — two classes,
+       which outranks `.rounded-full`'s single class. So the span was a ROUNDED RECTANGLE
+       sitting inside a rounded-full wrapper that clips to a capsule, and the corner
+       mismatch read as a broken, unclosed border. It only became visible once the
+       doubled shine text stopped drawing attention away from it.
+       Doubling the class raises specificity without !important, and it fixes every
+       element on the page that asks for a capsule while carrying border-subtle. */
+    .rounded-full.rounded-full { border-radius: 9999px; }
     /* Tour rows · rounded on first + last for clean list edges */
     .tour-row:first-child { border-top-left-radius: var(--radius-md); border-top-right-radius: var(--radius-md); }
     .tour-row:last-child { border-bottom-left-radius: var(--radius-md); border-bottom-right-radius: var(--radius-md); }
