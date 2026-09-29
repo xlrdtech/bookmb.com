@@ -924,6 +924,23 @@
       }
       .reveal, .reveal-stagger > * { transition: none; opacity: 1; transform: none; }
     }
+
+    /* LIVE SOCIAL FEEDS -- same treatment as diamondcutzstudios.com (goal dcz-scope, bookmb
+       extension, qi 2026-09-29: "anything they post on social media or their YouTube accounts
+       is supposed to automatically reflect on their websites"). Hidden by JS until real data fills
+       them -- never an empty shell. */
+    .mb-social-feed{display:flex;gap:14px;overflow-x:auto;scroll-snap-type:x proximity;padding-bottom:6px}
+    .mb-social-feed::-webkit-scrollbar{height:6px}
+    .mb-social-feed::-webkit-scrollbar-thumb{background:var(--border-subtle);border-radius:3px}
+    .mb-social-card{flex:0 0 clamp(150px,42vw,196px);scroll-snap-align:start;border:1px solid var(--border-subtle);
+      border-radius:var(--radius-md);overflow:hidden;text-decoration:none;color:inherit;
+      background:rgba(10,18,40,.4);transition:border-color .2s,transform .2s;display:block}
+    .mb-social-card:hover{border-color:#3a5080;transform:translateY(-2px)}
+    .mb-social-card img{width:100%;object-fit:cover;display:block;background:var(--bg-deep)}
+    .mb-social-card.mb-tt-card img{aspect-ratio:9/16}
+    .mb-social-card.mb-ig-card img{aspect-ratio:4/5}
+    .mb-social-card .t{font-size:12.5px;line-height:1.3;padding:9px 11px 3px;font-weight:600;color:#fff}
+    .mb-social-card .d{font-size:10.5px;opacity:.6;padding:0 11px 10px;letter-spacing:.04em}
   </style>
 </head>
 <body class="bg-grid selection:bg-white selection:text-[#050b1c] pb-0">
@@ -2522,6 +2539,19 @@
         </a>
       </div>
 
+      <!-- Live social feeds (dcz-scope extension to bookmb, qi 2026-09-29: "anything they post
+           on social media or their YouTube accounts is supposed to automatically reflect on
+           their websites"). Hidden by JS until real posts fill them -- no human step, no
+           placeholder content ever shown. -->
+      <div id="mbTtWrap" class="reveal mb-16" hidden>
+        <div class="text-xs text-subtle uppercase tracking-widest mb-4 font-mono">Latest on TikTok</div>
+        <div class="mb-social-feed" id="mbTtFeed"></div>
+      </div>
+      <div id="mbIgWrap" class="reveal mb-16" hidden>
+        <div class="text-xs text-subtle uppercase tracking-widest mb-4 font-mono">Latest on Instagram</div>
+        <div class="mb-social-feed" id="mbIgFeed"></div>
+      </div>
+
       <!-- Bottom Bar -->
       <div class="reveal flex flex-col md:flex-row justify-between items-center gap-6 pt-8 border-t border-subtle text-sm text-subtle">
         <div class="flex items-center gap-3">
@@ -2882,6 +2912,74 @@
      });
    })
    .catch(function(){ /* leave the cards hidden - never show a broken player */ });
+})();
+</script>
+
+<!-- ── LIVE TIKTOK — ZERO DELAY (dcz-scope extension to bookmb, same treatment as
+     diamondcutzstudios.com) ────────────────────────────────────────────────────
+     xen-bookmb-tiktok (launchd com.xen.bookmb-tiktok, every 30 min) writes only video
+     ids + dates to /data/tiktok.json -- no login, no signed URL stored. Thumbnails are
+     pulled live here via TikTok's own oEmbed (CORS *), so nothing on the page can expire.
+     Wrap stays hidden until real videos fill it. -->
+<script>
+(function(){
+  var wrap=document.getElementById('mbTtWrap'), feed=document.getElementById('mbTtFeed');
+  if(!wrap||!feed) return;
+  fetch('/data/tiktok.json',{cache:'no-store'})
+   .then(function(r){return r.json();})
+   .then(function(d){
+     if(!d||!d.videos||!d.videos.length) return;   // silent: no fake cards
+     var made=0;
+     d.videos.forEach(function(v){
+       fetch('https://www.tiktok.com/oembed?url='+encodeURIComponent(v.url))
+        .then(function(r){return r.ok?r.json():null;})
+        .then(function(oe){
+          if(!oe||!oe.thumbnail_url) return;
+          var a=document.createElement('a');
+          a.href=v.url; a.target='_blank'; a.rel='noopener';
+          a.className='mb-social-card mb-tt-card';
+          var img=document.createElement('img');
+          img.loading='lazy'; img.src=oe.thumbnail_url; img.alt=oe.title||'TikTok video';
+          img.onerror=function(){ a.remove(); if(!feed.children.length) wrap.hidden=true; };
+          var t=document.createElement('div'); t.className='t'; t.textContent=oe.title||'TikTok video';
+          var dEl=document.createElement('div'); dEl.className='d'; dEl.textContent=v.published||'';
+          a.appendChild(img); a.appendChild(t); a.appendChild(dEl);
+          feed.appendChild(a);
+          made++; wrap.hidden=false;
+        })
+        .catch(function(){ /* skip this one card, never show a broken thumbnail */ });
+     });
+   })
+   .catch(function(){ /* leave the wrap hidden */ });
+})();
+</script>
+
+<!-- ── LIVE INSTAGRAM — ZERO DELAY (dcz-scope extension to bookmb) ───────────────
+     xen-bookmb-instagram (launchd com.xen.bookmb-instagram, every 30 min) reads
+     @thereal_m_b's public profile embed and stores each post's cover image once in
+     /assets/ig/, so covers never rely on a signed, expiring cdninstagram URL. -->
+<script>
+(function(){
+  var wrap=document.getElementById('mbIgWrap'), feed=document.getElementById('mbIgFeed');
+  if(!wrap||!feed) return;
+  fetch('/data/instagram.json',{cache:'no-store'})
+   .then(function(r){return r.json();})
+   .then(function(d){
+     if(!d||!d.posts||!d.posts.length) return;   // silent: no fake cards
+     d.posts.forEach(function(p){
+       var a=document.createElement('a');
+       a.href=p.url; a.target='_blank'; a.rel='noopener';
+       a.className='mb-social-card mb-ig-card';
+       var img=document.createElement('img');
+       img.loading='lazy'; img.src=p.image; img.alt=(p.kind||'Instagram post');
+       img.onerror=function(){ a.remove(); if(!feed.children.length) wrap.hidden=true; };
+       var t=document.createElement('div'); t.className='t'; t.textContent=(p.kind==='reel'?'Reel':'Post')+' '+(p.published||'');
+       a.appendChild(img); a.appendChild(t);
+       feed.appendChild(a);
+     });
+     wrap.hidden=false;
+   })
+   .catch(function(){ /* leave the wrap hidden */ });
 })();
 </script>
 </body>
