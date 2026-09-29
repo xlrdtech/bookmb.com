@@ -1,10 +1,17 @@
 {
  "source": "instagram-public-profile-embed",
  "user": "thereal_m_b",
- "fetched": "2026-09-29T03:59:41",
- "posts_count": 452,
+ "fetched": "2026-09-29T18:01:22",
+ "posts_count": 453,
  "count": 6,
  "posts": [
+  {
+   "shortcode": "Dd4xBtuqkQU",
+   "kind": "reel",
+   "published": "2026-09-29",
+   "url": "https://www.instagram.com/p/Dd4xBtuqkQU/",
+   "image": "/assets/ig/Dd4xBtuqkQU.jpg"
+  },
   {
    "shortcode": "Dd1eRPJhWA8",
    "kind": "reel",
@@ -39,13 +46,6 @@
    "published": "2026-09-24",
    "url": "https://www.instagram.com/p/DdsOJcjRY3c/",
    "image": "/assets/ig/DdsOJcjRY3c.jpg"
-  },
-  {
-   "shortcode": "Ddr5OSHRAMf",
-   "kind": "reel",
-   "published": "2026-09-24",
-   "url": "https://www.instagram.com/p/Ddr5OSHRAMf/",
-   "image": "/assets/ig/Ddr5OSHRAMf.jpg"
   }
  ]
 }
