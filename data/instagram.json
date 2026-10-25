@@ -1,10 +1,38 @@
 {
  "source": "instagram-public-profile-embed",
  "user": "thereal_m_b",
- "fetched": "2026-10-10T19:08:31",
- "posts_count": 454,
+ "fetched": "2026-10-25T00:09:25",
+ "posts_count": 459,
  "count": 6,
  "posts": [
+  {
+   "shortcode": "De5LZDuhgNk",
+   "kind": "reel",
+   "published": "2026-10-24",
+   "url": "https://www.instagram.com/p/De5LZDuhgNk/",
+   "image": "/assets/ig/De5LZDuhgNk.jpg"
+  },
+  {
+   "shortcode": "Dey3ejhK169",
+   "kind": "reel",
+   "published": "2026-10-22",
+   "url": "https://www.instagram.com/p/Dey3ejhK169/",
+   "image": "/assets/ig/Dey3ejhK169.jpg"
+  },
+  {
+   "shortcode": "DesLly3qQLW",
+   "kind": "reel",
+   "published": "2026-10-19",
+   "url": "https://www.instagram.com/p/DesLly3qQLW/",
+   "image": "/assets/ig/DesLly3qQLW.jpg"
+  },
+  {
+   "shortcode": "DerlkTdxEqX",
+   "kind": "post",
+   "published": "2026-10-19",
+   "url": "https://www.instagram.com/p/DerlkTdxEqX/",
+   "image": "/assets/ig/DerlkTdxEqX.jpg"
+  },
   {
    "shortcode": "Dd8ug2kKOji",
    "kind": "reel",
@@ -18,34 +46,6 @@
    "published": "2026-09-29",
    "url": "https://www.instagram.com/p/Dd4xBtuqkQU/",
    "image": "/assets/ig/Dd4xBtuqkQU.jpg"
-  },
-  {
-   "shortcode": "Dd1eRPJhWA8",
-   "kind": "reel",
-   "published": "2026-09-28",
-   "url": "https://www.instagram.com/p/Dd1eRPJhWA8/",
-   "image": "/assets/ig/Dd1eRPJhWA8.jpg"
-  },
-  {
-   "shortcode": "Dd1LRzuqyql",
-   "kind": "reel",
-   "published": "2026-09-28",
-   "url": "https://www.instagram.com/p/Dd1LRzuqyql/",
-   "image": "/assets/ig/Dd1LRzuqyql.jpg"
-  },
-  {
-   "shortcode": "Ddu539AAPNX",
-   "kind": "reel",
-   "published": "2026-09-25",
-   "url": "https://www.instagram.com/p/Ddu539AAPNX/",
-   "image": "/assets/ig/Ddu539AAPNX.jpg"
-  },
-  {
-   "shortcode": "Ddu27sXRygw",
-   "kind": "reel",
-   "published": "2026-09-25",
-   "url": "https://www.instagram.com/p/Ddu27sXRygw/",
-   "image": "/assets/ig/Ddu27sXRygw.jpg"
   }
  ]
 }
