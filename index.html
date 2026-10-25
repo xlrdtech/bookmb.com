@@ -2765,7 +2765,7 @@
           <p class="text-subtle text-base md:text-lg">Tell us about the show.</p>
         </div>
 
-        <form class="space-y-6" onsubmit="event.preventDefault(); alert('Booking request received — M_B management will be back to you shortly.'); document.getElementById('book-modal').classList.remove('open'); document.body.classList.remove('modal-open');">
+        <form class="space-y-6" onsubmit="return mbBook(event)">
 
           <div class="border border-subtle glow-card hover-glow">
             <div class="border-b border-subtle p-5" style="background-color: rgba(10, 18, 40, 0.65); backdrop-filter: blur(8px);">
@@ -2778,16 +2778,16 @@
               <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div class="input-wrapper">
                   <label class="block text-xs text-subtle uppercase tracking-wider mb-3">Your Name</label>
-                  <input type="text" placeholder="Your name" required>
+                  <input type="text" name="name" placeholder="Your name" required>
                 </div>
                 <div class="input-wrapper">
                   <label class="block text-xs text-subtle uppercase tracking-wider mb-3">Email</label>
-                  <input type="email" placeholder="you@email.com" required>
+                  <input type="email" name="email" placeholder="you@email.com" required>
                 </div>
               </div>
               <div class="input-wrapper">
                 <label class="block text-xs text-subtle uppercase tracking-wider mb-3">Phone</label>
-                <input type="tel" placeholder="(555) 000-0000">
+                <input type="tel" name="phone" placeholder="(555) 000-0000">
               </div>
             </div>
           </div>
@@ -2802,7 +2802,7 @@
             <div class="p-6 md:p-8 space-y-6">
               <div class="input-wrapper">
                 <label class="block text-xs text-subtle uppercase tracking-wider mb-3">What kind of show?</label>
-                <select required>
+                <select name="show" required>
                   <option value="" disabled selected>Pick one...</option>
                   <option>Trail Ride</option>
                   <option>Field Party</option>
@@ -2815,11 +2815,11 @@
               </div>
               <div class="input-wrapper">
                 <label class="block text-xs text-subtle uppercase tracking-wider mb-3">Date</label>
-                <input type="date" required class="text-subtle">
+                <input type="date" name="date" required class="text-subtle">
               </div>
               <div class="input-wrapper">
                 <label class="block text-xs text-subtle uppercase tracking-wider mb-3">City / Venue</label>
-                <input type="text" placeholder="City, State — venue name if you have it">
+                <input type="text" name="city" placeholder="City, State — venue name if you have it">
               </div>
             </div>
           </div>
@@ -2834,7 +2834,7 @@
             <div class="p-6 md:p-8 space-y-6">
               <div class="input-wrapper">
                 <label class="block text-xs text-subtle uppercase tracking-wider mb-3">Budget range</label>
-                <select required>
+                <select name="budget" required>
                   <option value="" disabled selected>Pick one...</option>
                   <option>Under $2K</option>
                   <option>$2K – $5K</option>
@@ -2845,7 +2845,7 @@
               </div>
               <div class="input-wrapper">
                 <label class="block text-xs text-subtle uppercase tracking-wider mb-3">Anything else we should know?</label>
-                <textarea rows="4" placeholder="Headliner, supporting, length of set, sound provided, anything special — drop it here."></textarea>
+                <textarea name="notes" rows="4" placeholder="Headliner, supporting, length of set, sound provided, anything special — drop it here."></textarea>
               </div>
             </div>
           </div>
@@ -2854,12 +2854,37 @@
             <div class="text-xs text-subtle font-mono uppercase tracking-widest text-center md:text-left">
               Goes direct to M_B management
             </div>
-            <button type="submit" class="btn-primary w-full md:w-auto px-10 py-4">Send Booking Request</button>
+            <button type="submit" id="mb-book-send" class="btn-primary w-full md:w-auto px-10 py-4">Send Booking Request</button>
           </div>
+          <p id="mb-book-msg" class="text-sm text-center md:text-right" role="status" aria-live="polite"></p>
+          <!-- Honeypot stays LAST: openModal() focuses the form's first input, and a person typing into this one would be dropped as a bot. -->
+          <input type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0">
         </form>
       </div>
     </div>
   </div>
+  <script>
+  /* Booking · sends the form to the M_B intake Worker (own store, no public read). Until 2026-10-25 this
+     form only showed an alert and kept nothing. Say "received" only when the Worker answers ok:true;
+     anything else is an honest failure and the form stays filled so nothing typed is lost. */
+  function mbBook(e){
+    e.preventDefault();
+    var f=e.target, b=document.getElementById('mb-book-send'), m=document.getElementById('mb-book-msg');
+    var d={}; new FormData(f).forEach(function(v,k){ d[k]=v; }); d.ref=document.referrer;
+    b.disabled=true; m.textContent='Sending…';
+    fetch('https://mb-booking.lord-1e4.workers.dev/book',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(d)})
+      .then(function(x){ return x.json().catch(function(){ return {}; }); })
+      .then(function(j){
+        if(!j.ok){ throw new Error(j.fields ? 'Please fill: '+j.fields.join(', ') : 'not saved'); }
+        f.reset(); m.textContent='';
+        alert('Booking request received — M_B management will be back to you shortly.');
+        document.getElementById('book-modal').classList.remove('open'); document.body.classList.remove('modal-open');
+      })
+      .catch(function(err){ m.textContent='That did not go through ('+err.message+'). Tap Send again.'; })
+      .then(function(){ b.disabled=false; });
+    return false;
+  }
+  </script>
   <script>
   /* Tour · auto-hide past dates so only upcoming shows display (2026 season). Fail-safe: show on any parse doubt — never hides a real upcoming gig. */
   (function(){
