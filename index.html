@@ -2917,36 +2917,37 @@
 
 <!-- ── LIVE TIKTOK — ZERO DELAY (dcz-scope extension to bookmb, same treatment as
      diamondcutzstudios.com) ────────────────────────────────────────────────────
-     xen-bookmb-tiktok (launchd com.xen.bookmb-tiktok, every 30 min) writes only video
-     ids + dates to /data/tiktok.json -- no login, no signed URL stored. Thumbnails are
-     pulled live here via TikTok's own oEmbed (CORS *), so nothing on the page can expire.
-     Wrap stays hidden until real videos fill it. -->
+     xen-bookmb-tiktok (launchd com.xen.bookmb-tiktok, every 30 min) writes video ids,
+     dates and captions to /data/tiktok.json and stores each cover once in /assets/tt/ --
+     no login, no signed URL stored, so nothing on the page can expire. TikTok's oEmbed
+     stopped returning thumbnail_url/title (10-25), so it is only a fallback for a video
+     whose cover the job could not store. Wrap stays hidden until real videos fill it. -->
 <script>
 (function(){
   var wrap=document.getElementById('mbTtWrap'), feed=document.getElementById('mbTtFeed');
   if(!wrap||!feed) return;
+  function card(v, src, title){
+    var a=document.createElement('a');
+    a.href=v.url; a.target='_blank'; a.rel='noopener';
+    a.className='mb-social-card mb-tt-card';
+    var img=document.createElement('img');
+    img.loading='lazy'; img.src=src; img.alt=title||'TikTok video';
+    img.onerror=function(){ a.remove(); if(!feed.children.length) wrap.hidden=true; };
+    var t=document.createElement('div'); t.className='t'; t.textContent=title||'TikTok video';
+    var dEl=document.createElement('div'); dEl.className='d'; dEl.textContent=v.published||'';
+    a.appendChild(img); a.appendChild(t); a.appendChild(dEl);
+    feed.appendChild(a);
+    wrap.hidden=false;
+  }
   fetch('/data/tiktok.json',{cache:'no-store'})
    .then(function(r){return r.json();})
    .then(function(d){
      if(!d||!d.videos||!d.videos.length) return;   // silent: no fake cards
-     var made=0;
      d.videos.forEach(function(v){
+       if(v.image){ card(v, v.image, v.title); return; }
        fetch('https://www.tiktok.com/oembed?url='+encodeURIComponent(v.url))
         .then(function(r){return r.ok?r.json():null;})
-        .then(function(oe){
-          if(!oe||!oe.thumbnail_url) return;
-          var a=document.createElement('a');
-          a.href=v.url; a.target='_blank'; a.rel='noopener';
-          a.className='mb-social-card mb-tt-card';
-          var img=document.createElement('img');
-          img.loading='lazy'; img.src=oe.thumbnail_url; img.alt=oe.title||'TikTok video';
-          img.onerror=function(){ a.remove(); if(!feed.children.length) wrap.hidden=true; };
-          var t=document.createElement('div'); t.className='t'; t.textContent=oe.title||'TikTok video';
-          var dEl=document.createElement('div'); dEl.className='d'; dEl.textContent=v.published||'';
-          a.appendChild(img); a.appendChild(t); a.appendChild(dEl);
-          feed.appendChild(a);
-          made++; wrap.hidden=false;
-        })
+        .then(function(oe){ if(oe&&oe.thumbnail_url) card(v, oe.thumbnail_url, v.title||oe.title); })
         .catch(function(){ /* skip this one card, never show a broken thumbnail */ });
      });
    })
