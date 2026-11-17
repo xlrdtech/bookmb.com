@@ -2947,7 +2947,7 @@
   }
   </script>
   <script>
-  /* Tour · auto-hide past dates so only upcoming shows display (2026 season). Fail-safe: show on any parse doubt — never hides a real upcoming gig. */
+  /* Tour · auto-hide past dates so only upcoming shows display (year read from the row when it names one, else 2026). Fail-safe: show on any parse doubt — never hides a real upcoming gig. */
   (function(){
     var M={Jan:0,Feb:1,Mar:2,Apr:3,May:4,Jun:5,Jul:6,Aug:7,Sep:8,Oct:9,Nov:10,Dec:11};
     var YEAR=2026, now=new Date(); now.setHours(0,0,0,0);
@@ -2957,7 +2957,8 @@
       if(!mEl||!dEl){ up++; if(!firstVisible)firstVisible=r; return; }
       var mo=M[(mEl.textContent||'').trim().slice(0,3)], day=parseInt((dEl.textContent||'').trim(),10);
       if(mo===undefined||isNaN(day)){ up++; if(!firstVisible)firstVisible=r; return; }
-      var d=new Date(YEAR,mo,day); d.setHours(23,59,59,0);
+      var ym=(r.textContent||'').match(/\b(20\d\d)\b/), yr=ym?parseInt(ym[1],10):YEAR;
+      var d=new Date(yr,mo,day); d.setHours(23,59,59,0);
       if(d<now){ r.style.display='none'; } else { up++; if(!firstVisible)firstVisible=r; }
     });
     if(firstVisible){ firstVisible.style.borderTop='none'; }
