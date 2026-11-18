@@ -1601,6 +1601,16 @@
           <span class="font-mono text-xs text-subtle">Tutorial</span>
         </div>
       </div>
+      <!-- Thirsty Thursday x M_B (tutorial) · sent by M_B 2026-11-18 10:00 AM for the dance section -->
+      <div class="border border-subtle glow-card hover-glow overflow-hidden col-span-2">
+        <div class="w-full aspect-video overflow-hidden" style="background-color: var(--bg-deep);">
+          <iframe src="https://www.youtube-nocookie.com/embed/_lWMyWuUlvY" title="Thirsty Thursday x M_B (tutorial)" class="w-full h-full" style="border:0;" loading="lazy" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe>
+        </div>
+        <div class="p-5 flex items-center justify-between">
+          <span class="text-sm font-semibold uppercase tracking-widest">Thirsty Thursday</span>
+          <span class="font-mono text-xs text-subtle">Tutorial</span>
+        </div>
+      </div>
       <div class="border border-subtle glow-card hover-glow overflow-hidden">
         <div class="w-full aspect-[9/16] overflow-hidden" style="background-color: var(--bg-deep);">
           <video src="assets/video/linedance-work-that-body.mp4" controls preload="metadata" playsinline poster="assets/posters/linedance-work-that-body.jpg" class="w-full h-full object-cover"></video>
@@ -2952,6 +2962,19 @@
     var M={Jan:0,Feb:1,Mar:2,Apr:3,May:4,Jun:5,Jul:6,Aug:7,Sep:8,Oct:9,Nov:10,Dec:11};
     var YEAR=2026, now=new Date(); now.setHours(0,0,0,0);
     var rows=document.querySelectorAll('#tour .tour-row'), up=0, firstVisible=null;
+    /* Sort by full date incl. year so a 2027 show never sits above a 2026 one (Benjamin 11/18 5:35 PM). Rows that do not parse keep their place at the end. */
+    (function(){
+      var list=rows.length&&rows[0].parentNode; if(!list) return;
+      var arr=[].slice.call(rows).map(function(r,i){
+        var mEl=r.querySelector('.uppercase'), dEl=r.querySelector('.text-3xl'), k=Infinity;
+        if(mEl&&dEl){ var mo=M[(mEl.textContent||'').trim().slice(0,3)], day=parseInt((dEl.textContent||'').trim(),10);
+          if(mo!==undefined&&!isNaN(day)){ var ym=(r.textContent||'').match(/\b(20\d\d)\b/); k=new Date(ym?parseInt(ym[1],10):YEAR,mo,day).getTime(); } }
+        return {r:r,k:k,i:i};
+      });
+      arr.sort(function(x,y){ return x.k===y.k ? x.i-y.i : (x.k<y.k?-1:1); });
+      arr.forEach(function(o){ list.appendChild(o.r); });
+      rows=list.querySelectorAll('.tour-row');
+    })();
     rows.forEach(function(r){
       var mEl=r.querySelector('.uppercase'), dEl=r.querySelector('.text-3xl');
       if(!mEl||!dEl){ up++; if(!firstVisible)firstVisible=r; return; }
