@@ -2867,6 +2867,9 @@
             <audio class="audio-player" controls preload="none" src="assets/audio/${slug}.mp3" aria-label="30 second preview of ${trackName}"></audio>
           `;
           description.after(audioRow);
+          /* Rows are built after the reveal observer started, so it never saw them and they
+             sat at opacity 0 forever (5 of them measured invisible 11/25). Hand each one in. */
+          revealObserver.observe(audioRow);
           /* Pause others when one starts */
           const audio = audioRow.querySelector('audio');
           audio.addEventListener('play', () => {
